@@ -90,7 +90,7 @@
   td:first-child { font-weight: 500; }
   td.via { color: var(--muted); white-space: nowrap; }
   .pill { display: inline-block; white-space: nowrap; font-size: 12.5px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
-  .pill.done { background: var(--good-soft); color: var(--good); }
+  .pill.built { background: var(--warn-soft); color: var(--warn); }
   .pill.now { background: var(--accent-soft); color: var(--accent-text); }
   .pill.todo { background: var(--neutral-soft); color: var(--muted); }
   .legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0 0 14px; font-size: 14px; color: var(--muted); }
@@ -197,7 +197,7 @@
     <div class="meta"><span>Stand van 12 november 2026</span><span>Looptijd: 16 november t/m 4 december 2026</span></div>
     <div class="kpis">
       <div class="kpi"><b>15 werkdagen</b><span>van eerste bouw tot besluit</span></div>
-      <div class="kpi"><b>5 van 10</b><span>koppelingen al gebouwd in demo-modus</span></div>
+      <div class="kpi"><b>5 van 10</b><span>koppelingen gebouwd, nog niet gekoppeld (voorbeelddata)</span></div>
       <div class="kpi"><b>4 december</b><span>besluit: extensie, import of kopieerblokken</span></div>
     </div>
   </div>
@@ -218,18 +218,18 @@
 
   <section id="wel">
     <h2>Wat we wel kunnen</h2>
-    <p class="intro">Realworks laat vooral lezen toe. Terugschrijven kan alleen voor leads, statistieken, zoekopdrachten en een paar relatiegegevens. Elke koppeling werkt pas live als het kantoor de API activeert en ons developer-ID toevoegt.</p>
-    <div class="legend"><span class="pill done">Gebouwd (demo)</span><span class="pill now">Deze twee weken</span><span class="pill todo">Kan, nog niet gebouwd</span></div>
+    <p class="intro">Realworks laat vooral lezen toe. Terugschrijven kan alleen voor leads, statistieken, zoekopdrachten en een paar relatiegegevens. Wat al gebouwd is, draait nu op voorbeelddata: er is nog niets echt verbonden met Realworks of HousApp. Een koppeling gaat pas live als een kantoor de API activeert en een token geeft.</p>
+    <div class="legend"><span class="pill built">Gebouwd, nog niet gekoppeld</span><span class="pill now">In deze planning</span><span class="pill todo">Kan, nog niet gebouwd</span></div>
     <div class="card table-wrap">
       <table>
         <thead><tr><th>Wat</th><th>Via</th><th>Status</th></tr></thead>
         <tbody>
-          <tr><td>Relaties lezen en als personen in het CRM zetten</td><td class="via">Relatie API</td><td><span class="pill done">Gebouwd (demo)</span></td></tr>
-          <tr><td>Afspraken lezen en in de agenda tonen</td><td class="via">Agenda API</td><td><span class="pill done">Gebouwd (demo)</span></td></tr>
-          <tr><td>Woningaanbod lezen</td><td class="via">Wonen API</td><td><span class="pill done">Gebouwd (demo)</span></td></tr>
-          <tr><td>Leads als aanvraag naar Realworks sturen</td><td class="via">Wonen API</td><td><span class="pill done">Gebouwd (demo)</span></td></tr>
-          <tr><td>Bezichtigingen ontvangen uit HousApp</td><td class="via">Eigen webhook</td><td><span class="pill done">Gebouwd (demo)</span></td></tr>
-          <tr><td>Objectinformatie met AI voorbereiden, kopieerklaar voor Realworks</td><td class="via">Eigen portaal</td><td><span class="pill now">Deze twee weken</span></td></tr>
+          <tr><td>Relaties lezen en als personen in het CRM zetten</td><td class="via">Relatie API</td><td><span class="pill built">Gebouwd, nog niet gekoppeld</span></td></tr>
+          <tr><td>Afspraken lezen en in de agenda tonen</td><td class="via">Agenda API</td><td><span class="pill built">Gebouwd, nog niet gekoppeld</span></td></tr>
+          <tr><td>Woningaanbod lezen</td><td class="via">Wonen API</td><td><span class="pill built">Gebouwd, nog niet gekoppeld</span></td></tr>
+          <tr><td>Leads als aanvraag naar Realworks sturen</td><td class="via">Wonen API</td><td><span class="pill built">Gebouwd, nog niet gekoppeld</span></td></tr>
+          <tr><td>Bezichtigingen ontvangen uit HousApp</td><td class="via">Eigen webhook</td><td><span class="pill built">Gebouwd, nog niet gekoppeld</span></td></tr>
+          <tr><td>Objectinformatie met AI voorbereiden, kopieerklaar voor Realworks</td><td class="via">Eigen portaal</td><td><span class="pill now">In deze planning</span></td></tr>
           <tr><td>Taken lezen</td><td class="via">Taken API</td><td><span class="pill todo">Nog niet gebouwd</span></td></tr>
           <tr><td>Bedrijfspanden en nieuwbouwprojecten lezen</td><td class="via">Business, Nieuwbouw API</td><td><span class="pill todo">Nog niet gebouwd</span></td></tr>
           <tr><td>Statistieken en zoekopdrachten terugschrijven</td><td class="via">Wonen API</td><td><span class="pill todo">Nog niet gebouwd</span></td></tr>
@@ -253,7 +253,7 @@
       <div class="card limit"><h3>Funda of Realworks scrapen</h3><div><span class="label">Gevolg</span><p>Niet toegestaan: voorwaarden en Databankenwet.</p></div><div class="alt"><span class="label">Alternatief</span><p>Niet doen.</p></div></div>
       <div class="card limit"><h3>Realworks-logo of "partner" gebruiken</h3><div><span class="label">Gevolg</span><p>Mag niet zonder toestemming.</p></div><div class="alt"><span class="label">Alternatief</span><p>Alleen "koppelt met Realworks".</p></div></div>
     </div>
-    <div class="callout"><strong>Grootste risico:</strong> Realworks kan de toegang beperken. Dat is een contractkwestie, geen wettelijke. Daarom praten we eerst met Realworks en lezen we hun voorwaarden voordat we verkopen.</div>
+    <div class="callout"><strong>Grootste risico:</strong> Realworks kan de toegang beperken. Dat is een contractkwestie, geen wettelijke. Daarom praten we eerst met Realworks. Volgens hun voorwaarden is het API-gebruik toegestaan voor deze doeleinden.</div>
   </section>
 
   <section id="aanpak">
