@@ -230,6 +230,7 @@
           <tr><td>Leads als aanvraag naar Realworks sturen</td><td class="via">Wonen API</td><td><span class="pill built">Gebouwd, nog niet gekoppeld</span></td></tr>
           <tr><td>Bezichtigingen ontvangen uit HousApp</td><td class="via">Eigen webhook</td><td><span class="pill built">Gebouwd, nog niet gekoppeld</span></td></tr>
           <tr><td>Objectinformatie met AI voorbereiden, kopieerklaar voor Realworks</td><td class="via">Eigen portaal</td><td><span class="pill now">In deze planning</span></td></tr>
+          <tr><td>Met één klik naar het juiste Realworks-scherm: nieuw object, woning of relatie</td><td class="via">Directe link</td><td><span class="pill now">In deze planning</span></td></tr>
           <tr><td>Taken lezen</td><td class="via">Taken API</td><td><span class="pill todo">Nog niet gebouwd</span></td></tr>
           <tr><td>Bedrijfspanden en nieuwbouwprojecten lezen</td><td class="via">Business, Nieuwbouw API</td><td><span class="pill todo">Nog niet gebouwd</span></td></tr>
           <tr><td>Statistieken en zoekopdrachten terugschrijven</td><td class="via">Wonen API</td><td><span class="pill todo">Nog niet gebouwd</span></td></tr>
@@ -271,7 +272,7 @@
 
   <section id="planning">
     <h2>Planning</h2>
-    <p class="intro">Week 1 levert de AI-objectinvoer met kopieerblokken, met een interne demo op vrijdag 20 november. In week 2 stemmen we de koppeling af op de echte Realworks-documentatie en maken we de onboarding per kantoor klaar. In week 3 draait de pilot bij één kantoor en verwerken we de feedback.</p>
+    <p class="intro">Week 1 levert de AI-objectinvoer met kopieerblokken, met een interne demo op vrijdag 20 november. In week 2 stemmen we de koppeling af op de echte Realworks-documentatie, bouwen we directe links naar de juiste Realworks-schermen en maken we de onboarding per kantoor klaar. In week 3 draait de pilot bij één kantoor en verwerken we de feedback.</p>
     <div class="card timeline">
       <div class="tl-head"><h3>Op 4 december besluiten we hoe objecten naar Realworks gaan</h3><p>Per dag, 16 november t/m 4 december 2026</p></div>
       <div class="tl" role="img" aria-label="Tijdlijn van 16 november tot en met 4 december 2026">
@@ -286,6 +287,7 @@
         <div class="name">Interne demo</div><div class="track"><div class="ms-label" style="grid-column:1/5">vr 20 nov</div><div class="ms" style="grid-column:5"></div></div>
         <div class="lane">Week 2 · Koppeling</div>
         <div class="name">Paden en velden afstemmen</div><div class="track"><div class="bar us" style="grid-column:8/11"></div></div>
+        <div class="name">Directe links naar Realworks</div><div class="track"><div class="bar us" style="grid-column:10/12"></div></div>
         <div class="name">Onboarding per kantoor</div><div class="track"><div class="bar us" style="grid-column:11/13"></div></div>
         <div class="lane">Week 3 · Pilot</div>
         <div class="name">Pilot met één kantoor</div><div class="track"><div class="bar us" style="grid-column:15/18"></div></div>
@@ -301,7 +303,7 @@
     </div>
     <div class="weeks">
       <div class="card week"><h3>Week 1: AI-objectinvoer</h3><div class="when">16 t/m 20 november</div><ul><li>BAG- en energielabelgegevens ophalen op adres</li><li>AI-teksten met voorstel en goedkeuring</li><li>Kopieerblokken per Realworks-tabblad</li><li>Interne demo op vrijdag</li></ul></div>
-      <div class="card week"><h3>Week 2: koppeling</h3><div class="when">23 t/m 27 november</div><ul><li>Paden en veldnamen afstemmen op de Realworks-documentatie</li><li>Onboarding per kantoor: checklist, activatie en tokens</li><li>Pilotkantoor vastleggen</li></ul></div>
+      <div class="card week"><h3>Week 2: koppeling</h3><div class="when">23 t/m 27 november</div><ul><li>Paden en veldnamen afstemmen op de Realworks-documentatie</li><li>Directe links: met één klik naar nieuw object, woning of relatie in Realworks</li><li>Onboarding per kantoor: checklist, activatie en tokens</li><li>Pilotkantoor vastleggen</li></ul></div>
       <div class="card week"><h3>Week 3: pilot</h3><div class="when">30 november t/m 4 december</div><ul><li>Pilot bij één kantoor met eigen tokens</li><li>Verbeteren op basis van de feedback</li><li>Besluit over extensie of import op vrijdag</li></ul></div>
     </div>
     <p class="intro" style="margin-top:20px">De bouw doen wij. De gesprekken met Realworks, de jurist, HousApp en het pilotkantoor liggen bij jullie. De verwerkersovereenkomst moet rond zijn voordat de pilot met echte klantdata start. Het besluit op 4 december hangt af van wat Realworks antwoordt over de extensie en een objectimport.</p>
@@ -331,6 +333,7 @@
       </div>
       <div class="card check-card" data-group="product"><h3>Product <small></small></h3>
         <label><input type="checkbox"><span>Demo alleen met nepdata, nooit met echte klantdata</span></label>
+        <label><input type="checkbox"><span>Adressen uit de Realworks-adresbalk aanleveren (nieuw object, woning, relatie)</span></label>
         <label><input type="checkbox"><span>Kantoor zoeken voor een pilot (met eigen Realworks-tokens)</span></label>
       </div>
     </div>
