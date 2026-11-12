@@ -312,7 +312,7 @@
     <p class="intro">Vink af wat geregeld is. Je vinkjes worden alleen in deze browser onthouden.</p>
     <div class="checks">
       <div class="card check-card" data-group="realworks"><h3>Realworks <small></small></h3>
-        <label><input type="checkbox"><span>Ontwikkelaarsvoorwaarden lezen in het Developers Portal (doorverkopen, opslaan van data, concurrerend gebruik)</span></label>
+        <label><input type="checkbox" checked><span>Ontwikkelaarsvoorwaarden lezen in het Developers Portal (doorverkopen, opslaan van data, concurrerend gebruik)</span></label>
         <label><input type="checkbox"><span>Exacte paden en veldnamen van de Relatie-, Agenda- en Wonen-API overnemen</span></label>
         <label><input type="checkbox"><span>Vragen: kunnen we officieel Marketplace-partner worden?</span></label>
         <label><input type="checkbox"><span>Vragen: mag een browserextensie het objectformulier invullen?</span></label>
@@ -355,7 +355,7 @@
 
 <script>
   // Vinkjes per browser onthouden (werkt ook zonder opslag).
-  const KEY = 'plan-checks-v1';
+  const KEY = 'plan-checks-v2';
   let saved = {};
   try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { saved = {}; }
   document.querySelectorAll('.check-card').forEach((card) => {
@@ -364,7 +364,7 @@
     const update = () => { count.textContent = `${boxes.filter((b) => b.checked).length}/${boxes.length}`; };
     boxes.forEach((b, i) => {
       const id = `${card.dataset.group}-${i}`;
-      b.checked = !!saved[id];
+      if (id in saved) b.checked = !!saved[id];
       b.addEventListener('change', () => {
         saved[id] = b.checked; update();
         try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
