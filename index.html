@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Plan Realworks-koppeling en AI-objectinvoer</title>
+<meta name="description" content="Wat het makelaarsportaal wel en niet kan met de Realworks-API's, de aanpak voor AI-objectinvoer en de planning voor 16 t/m 27 november 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230e7490'/%3E%3Cpath d='M8 17l8-7 8 7v8H8z' fill='white'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #f7f6f3; --surface: #ffffff; --surface-2: #f1efea; --border: #e3e0d8;
+    --text: #1c1b19; --muted: #5f5b53; --faint: #8b867c;
+    --accent: #0e7490; --accent-soft: #e0f2f6; --accent-text: #0b5f75;
+    --good: #15803d; --good-soft: #e3f4e7;
+    --warn: #b45309; --warn-soft: #fbefd9;
+    --bad: #b91c1c; --bad-soft: #fbe7e7;
+    --neutral-soft: #ecebe7;
+    --bar: #d9d5cb; --weekend: #efede7;
+    --shadow: 0 1px 2px rgba(28,27,25,.05), 0 4px 16px rgba(28,27,25,.04);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141413; --surface: #1d1c1a; --surface-2: #262522; --border: #34322e;
+      --text: #f2f0eb; --muted: #b3aea3; --faint: #858076;
+      --accent: #38bdd8; --accent-soft: #12333c; --accent-text: #7dd6e8;
+      --good: #4ade80; --good-soft: #15301f;
+      --warn: #fbbf24; --warn-soft: #3a2c10;
+      --bad: #f87171; --bad-soft: #3b1717;
+      --neutral-soft: #2b2a27;
+      --bar: #45423c; --weekend: #201f1d;
+      --shadow: none;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #141413; --surface: #1d1c1a; --surface-2: #262522; --border: #34322e;
+    --text: #f2f0eb; --muted: #b3aea3; --faint: #858076;
+    --accent: #38bdd8; --accent-soft: #12333c; --accent-text: #7dd6e8;
+    --good: #4ade80; --good-soft: #15301f;
+    --warn: #fbbf24; --warn-soft: #3a2c10;
+    --bad: #f87171; --bad-soft: #3b1717;
+    --neutral-soft: #2b2a27;
+    --bar: #45423c; --weekend: #201f1d;
+    --shadow: none;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.6 Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent-text); text-underline-offset: 3px; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+
+  /* Header */
+  header.hero { padding: 64px 0 40px; border-bottom: 1px solid var(--border); background: var(--surface); }
+  .eyebrow { display: inline-flex; gap: 8px; align-items: center; font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--accent-text); }
+  .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+  h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.12; letter-spacing: -.02em; margin: 14px 0 16px; max-width: 18ch; }
+  .lead { font-size: 18px; color: var(--muted); max-width: 62ch; margin: 0; }
+  .meta { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px; color: var(--faint); }
+  .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 32px; }
+  .kpi { background: var(--surface-2); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; }
+  .kpi b { display: block; font-size: 26px; letter-spacing: -.02em; }
+  .kpi span { font-size: 14px; color: var(--muted); }
+
+  /* Nav */
+  nav.toc { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: saturate(1.4) blur(10px); border-bottom: 1px solid var(--border); }
+  nav.toc .wrap { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; padding-top: 8px; padding-bottom: 8px; }
+  nav.toc a { flex: none; font-size: 14px; font-weight: 500; color: var(--muted); text-decoration: none; padding: 6px 12px; border-radius: 999px; }
+  nav.toc a:hover { background: var(--surface-2); color: var(--text); }
+  nav.toc a.active { background: var(--accent-soft); color: var(--accent-text); }
+
+  /* Sections */
+  section { padding: 56px 0 8px; scroll-margin-top: 56px; }
+  h2 { font-size: 26px; letter-spacing: -.015em; margin: 0 0 8px; }
+  .intro { color: var(--muted); max-width: 66ch; margin: 0 0 24px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th { text-align: left; font-size: 12px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--faint); padding: 14px 18px; border-bottom: 1px solid var(--border); }
+  td { padding: 14px 18px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  td:first-child { font-weight: 500; }
+  td.via { color: var(--muted); white-space: nowrap; }
+  .pill { display: inline-block; white-space: nowrap; font-size: 12.5px; font-weight: 600; padding: 3px 10px; border-radius: 999px; }
+  .pill.done { background: var(--good-soft); color: var(--good); }
+  .pill.now { background: var(--accent-soft); color: var(--accent-text); }
+  .pill.later { background: var(--neutral-soft); color: var(--muted); }
+  .legend { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0 0 14px; font-size: 14px; color: var(--muted); }
+
+  .limits { display: grid; gap: 12px; }
+  .limit { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr) minmax(0, 1.2fr); gap: 16px; padding: 18px 20px; }
+  .limit h3 { margin: 0; font-size: 16px; display: flex; gap: 10px; align-items: flex-start; }
+  .limit h3::before { content: "×"; flex: none; width: 22px; height: 22px; border-radius: 50%; background: var(--bad-soft); color: var(--bad); font-size: 15px; line-height: 22px; text-align: center; font-weight: 700; }
+  .limit .label { display: block; font-size: 12px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--faint); margin-bottom: 2px; }
+  .limit p { margin: 0; font-size: 15px; }
+  .limit .alt p { color: var(--text); }
+  .callout { margin-top: 16px; padding: 16px 20px; border-radius: 14px; background: var(--warn-soft); color: var(--text); border: 1px solid color-mix(in srgb, var(--warn) 25%, transparent); font-size: 15px; }
+  .callout strong { color: var(--warn); }
+
+  /* Steps */
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; counter-reset: step; }
+  .steps li { counter-increment: step; display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; padding: 18px 20px; }
+  .steps li::before { content: counter(step); width: 36px; height: 36px; border-radius: 10px; background: var(--accent-soft); color: var(--accent-text); font-weight: 700; display: grid; place-items: center; }
+  .steps h3 { margin: 4px 0 2px; font-size: 16px; }
+  .steps p { margin: 0; color: var(--muted); font-size: 15px; }
+  .later { margin-top: 16px; padding: 18px 20px; display: flex; gap: 14px; align-items: flex-start; }
+  .later .tag { flex: none; font-size: 12px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--warn); background: var(--warn-soft); padding: 3px 10px; border-radius: 999px; margin-top: 2px; }
+  .later p { margin: 0; font-size: 15px; color: var(--muted); }
+
+  /* Timeline */
+  .timeline { padding: 20px; }
+  .tl-head h3 { margin: 0; font-size: 17px; }
+  .tl-head p { margin: 2px 0 18px; color: var(--muted); font-size: 14px; }
+  .tl { --name: 230px; display: grid; grid-template-columns: var(--name) repeat(19, minmax(0, 1fr)); row-gap: 6px; position: relative; }
+  .tl .day { font-size: 12px; line-height: 1.25; color: var(--muted); text-align: center; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .tl .day small { display: block; font-size: 10.5px; color: var(--faint); text-transform: uppercase; letter-spacing: .03em; }
+  .tl .day.we { color: var(--faint); opacity: .7; }
+  .tl .lane { grid-column: 1 / -1; font-size: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); margin-top: 16px; }
+  .tl .name { grid-column: 1; font-size: 14.5px; padding: 6px 12px 6px 0; align-self: center; }
+  .tl .name.key { font-weight: 600; }
+  .tl .track { grid-column: 2 / -1; display: grid; grid-template-columns: repeat(19, minmax(0, 1fr)); align-items: center; min-height: 34px; position: relative; }
+  .tl .bar { height: 16px; border-radius: 999px; background: var(--bar); }
+  .tl .bar.us { background: color-mix(in srgb, var(--accent) 40%, var(--surface)); }
+  .tl .ms { justify-self: center; width: 14px; height: 14px; transform: rotate(45deg); border-radius: 2px; background: var(--faint); position: relative; }
+  .tl .ms.key { background: var(--accent); width: 16px; height: 16px; }
+  .tl .ms-label { font-size: 12.5px; color: var(--muted); justify-self: end; padding-right: 8px; white-space: nowrap; }
+  .tl .ms-label.key { color: var(--text); font-weight: 600; }
+  .tl .bg { position: absolute; inset: 0 0 0 var(--name); display: grid; grid-template-columns: repeat(19, minmax(0, 1fr)); pointer-events: none; }
+  .tl .bg span { border-left: 1px solid color-mix(in srgb, var(--border) 60%, transparent); }
+  .tl .bg span.we { background: var(--weekend); }
+  .tl .bg span.go { border-left: 0; background: linear-gradient(var(--accent), var(--accent)) center / 1.5px 100% no-repeat; opacity: .45; }
+  .tl > *:not(.bg) { position: relative; }
+  .tl-foot { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 18px; font-size: 13.5px; color: var(--muted); }
+  .tl-foot i { display: inline-block; width: 22px; height: 10px; border-radius: 999px; vertical-align: middle; margin-right: 6px; }
+
+  .weeks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+  .week { padding: 18px 20px; }
+  .week h3 { margin: 0 0 4px; font-size: 16px; }
+  .week .when { font-size: 13px; color: var(--faint); }
+  .week ul { margin: 10px 0 0; padding-left: 18px; font-size: 15px; }
+  .week li { margin: 4px 0; }
+
+  /* Checklists */
+  .checks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .check-card { padding: 18px 20px; }
+  .check-card h3 { margin: 0 0 10px; font-size: 16px; display: flex; justify-content: space-between; gap: 8px; }
+  .check-card h3 small { font-weight: 500; color: var(--faint); font-size: 13px; }
+  .check-card label { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; font-size: 15px; cursor: pointer; }
+  .check-card input { margin-top: 4px; accent-color: var(--accent); width: 16px; height: 16px; flex: none; }
+  .check-card input:checked + span { color: var(--faint); text-decoration: line-through; }
+
+  .sources { columns: 2; column-gap: 32px; padding-left: 18px; font-size: 15px; }
+  .sources li { margin: 6px 0; break-inside: avoid; }
+
+  footer { margin-top: 64px; padding: 28px 0 40px; border-top: 1px solid var(--border); font-size: 13.5px; color: var(--faint); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+  .theme-btn { font: inherit; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+
+  @media (max-width: 760px) {
+    .tl .day small { display: none; }
+    .tl .day { font-size: 10.5px; }
+    header.hero { padding: 40px 0 28px; }
+    .kpis { grid-template-columns: 1fr; }
+    .limit { grid-template-columns: 1fr; gap: 10px; }
+    .weeks, .checks { grid-template-columns: 1fr; }
+    .sources { columns: 1; }
+    .tl { --name: 0px; grid-template-columns: repeat(19, minmax(0, 1fr)); }
+    .tl .day:first-child { display: none; }
+    .tl .name { grid-column: 1 / -1; padding: 8px 0 0; }
+    .tl .track { grid-column: 1 / -1; }
+    .tl .bg { inset: 0; }
+    .timeline { padding: 16px; }
+    td, th { padding: 12px 14px; }
+  }
+  @media print {
+    nav.toc, .theme-btn { display: none; }
+    section { padding-top: 24px; }
+    .card { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Makelaarsportaal · plan</span>
+    <h1>Realworks-koppeling en AI-objectinvoer</h1>
+    <p class="lead">In drie weken maken we het portaal klaar als werkplek bovenop Realworks: koppelingen om te lezen en leads door te sturen, plus AI die objectinformatie voorbereidt die de makelaar in Realworks overneemt. Objecten zelf aanmaken in Realworks kan niet via de API. Dat blijft een handmatige stap.</p>
+    <div class="meta"><span>Stand van 12 november 2026</span><span>Looptijd: 16 november t/m 4 december 2026</span></div>
+    <div class="kpis">
+      <div class="kpi"><b>15 werkdagen</b><span>van eerste bouw tot besluit</span></div>
+      <div class="kpi"><b>5 van 10</b><span>koppelingen al gebouwd in demo-modus</span></div>
+      <div class="kpi"><b>4 december</b><span>besluit: extensie, import of kopieerblokken</span></div>
+    </div>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Inhoud">
+  <div class="wrap">
+    <a href="#wel">Wat we wel kunnen</a>
+    <a href="#niet">Wat we niet kunnen</a>
+    <a href="#aanpak">Aanpak</a>
+    <a href="#planning">Planning</a>
+    <a href="#open">Open vragen</a>
+    <a href="#bronnen">Bronnen</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <section id="wel">
+    <h2>Wat we wel kunnen</h2>
+    <p class="intro">Realworks laat vooral lezen toe. Terugschrijven kan alleen voor leads, statistieken, zoekopdrachten en een paar relatiegegevens. Elke koppeling werkt pas live als het kantoor de API activeert en ons developer-ID toevoegt.</p>
+    <div class="legend"><span class="pill done">Gebouwd (demo)</span><span class="pill now">Deze twee weken</span><span class="pill later">Kan, nog niet gebouwd</span></div>
+    <div class="card table-wrap">
+      <table>
+        <thead><tr><th>Wat</th><th>Via</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Relaties lezen en als personen in het CRM zetten</td><td class="via">Relatie API</td><td><span class="pill done">Gebouwd (demo)</span></td></tr>
+          <tr><td>Afspraken lezen en in de agenda tonen</td><td class="via">Agenda API</td><td><span class="pill done">Gebouwd (demo)</span></td></tr>
+          <tr><td>Woningaanbod lezen</td><td class="via">Wonen API</td><td><span class="pill done">Gebouwd (demo)</span></td></tr>
+          <tr><td>Leads als aanvraag naar Realworks sturen</td><td class="via">Wonen API</td><td><span class="pill done">Gebouwd (demo)</span></td></tr>
+          <tr><td>Bezichtigingen ontvangen uit HousApp</td><td class="via">Eigen webhook</td><td><span class="pill done">Gebouwd (demo)</span></td></tr>
+          <tr><td>Objectinformatie met AI voorbereiden, kopieerklaar voor Realworks</td><td class="via">Eigen portaal</td><td><span class="pill now">Deze twee weken</span></td></tr>
+          <tr><td>Taken lezen</td><td class="via">Taken API</td><td><span class="pill later">Nog niet gebouwd</span></td></tr>
+          <tr><td>Bedrijfspanden en nieuwbouwprojecten lezen</td><td class="via">Business, Nieuwbouw API</td><td><span class="pill later">Nog niet gebouwd</span></td></tr>
+          <tr><td>Statistieken en zoekopdrachten terugschrijven</td><td class="via">Wonen API</td><td><span class="pill later">Nog niet gebouwd</span></td></tr>
+          <tr><td>Facturen en grootboek lezen</td><td class="via">Facturen API</td><td><span class="pill later">Nog niet gebouwd</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="niet">
+    <h2>Wat we niet kunnen</h2>
+    <p class="intro">Het portaal kan Realworks aanvullen, niet vervangen: objecten, publicatie en dossiers blijven in Realworks. Wie dat wel wil, moet zelf het hoofdsysteem worden, met eigen objecten en een eigen route naar Funda. Dan word je een concurrent van Realworks.</p>
+    <div class="limits">
+      <div class="card limit"><h3>Objecten aanmaken of wijzigen via de API</h3><div><span class="label">Gevolg</span><p>Woningen komen niet vanuit het portaal in Realworks.</p></div><div class="alt"><span class="label">Alternatief</span><p>AI bereidt alles voor; de makelaar neemt het over met kopieerblokken.</p></div></div>
+      <div class="card limit"><h3>Publiceren op Funda</h3><div><span class="label">Gevolg</span><p>Loopt altijd via Realworks en Tiara (NVM/Brainbay).</p></div><div class="alt"><span class="label">Alternatief</span><p>Realworks blijft de publicatiebron.</p></div></div>
+      <div class="card limit"><h3>Afspraken of taken aanmaken</h3><div><span class="label">Gevolg</span><p>Een HousApp-bezichtiging staat wel in het portaal, niet in de Realworks-agenda.</p></div><div class="alt"><span class="label">Alternatief</span><p>Navragen bij Realworks; tot dan handmatig overzetten.</p></div></div>
+      <div class="card limit"><h3>Relaties direct aanmaken</h3><div><span class="label">Gevolg</span><p>Nieuwe personen gaan alleen als lead naar Realworks.</p></div><div class="alt"><span class="label">Alternatief</span><p>Lead doorsturen (al gebouwd).</p></div></div>
+      <div class="card limit"><h3>Dossiers, documenten, transacties en e-mail</h3><div><span class="label">Gevolg</span><p>Daar is geen API voor.</p></div><div class="alt"><span class="label">Alternatief</span><p>Blijft in Realworks.</p></div></div>
+      <div class="card limit"><h3>Toegang zelf regelen</h3><div><span class="label">Gevolg</span><p>Het kantoor activeert en betaalt per API, geeft per woning en relatie vrij en kan het token altijd intrekken.</p></div><div class="alt"><span class="label">Alternatief</span><p>Een onboardingchecklist per kantoor.</p></div></div>
+      <div class="card limit"><h3>Openbare limieten en webhooks</h3><div><span class="label">Gevolg</span><p>Onbekend; we moeten periodiek ophalen.</p></div><div class="alt"><span class="label">Alternatief</span><p>Navragen in het Developers Portal.</p></div></div>
+      <div class="card limit"><h3>Funda of Realworks scrapen</h3><div><span class="label">Gevolg</span><p>Niet toegestaan: voorwaarden en Databankenwet.</p></div><div class="alt"><span class="label">Alternatief</span><p>Niet doen.</p></div></div>
+      <div class="card limit"><h3>Realworks-logo of "partner" gebruiken</h3><div><span class="label">Gevolg</span><p>Mag niet zonder toestemming.</p></div><div class="alt"><span class="label">Alternatief</span><p>Alleen "koppelt met Realworks".</p></div></div>
+    </div>
+    <div class="callout"><strong>Grootste risico:</strong> Realworks kan de toegang beperken. Dat is een contractkwestie, geen wettelijke. Daarom praten we eerst met Realworks en lezen we hun voorwaarden voordat we verkopen.</div>
+  </section>
+
+  <section id="aanpak">
+    <h2>Aanpak AI-objectinvoer</h2>
+    <p class="intro">We bouwen een scherm "Nieuw object met AI" dat alles klaarzet in de volgorde van de Realworks-tabbladen. Teksten plak je met één klik. Vaste velden zoals bouwjaar, oppervlakte en keuzelijsten typ je over vanuit een compacte lijst, omdat een webformulier geen hele set velden tegelijk aanneemt.</p>
+    <ol class="steps">
+      <li class="card"><div><h3>Adres invullen</h3><p>Het portaal haalt bouwjaar, oppervlakte en gebruiksdoel op uit de BAG en het energielabel uit EP-Online.</p></div></li>
+      <li class="card"><div><h3>Aanvullen wat geen bron heeft</h3><p>Kamers, bijzonderheden, notities van de opname en het meetrapport.</p></div></li>
+      <li class="card"><div><h3>AI schrijft een voorstel</h3><p>Aanbiedingstekst, korte omschrijving, indeling per verdieping en kenmerkenlijst. Feiten komen alleen uit stap 1 en 2; AI verzint geen cijfers.</p></div></li>
+      <li class="card"><div><h3>Makelaar controleert en keurt goed</h3><p>Elke generatie wordt gelogd, net als bij de andere AI-functies.</p></div></li>
+      <li class="card"><div><h3>Overnemen in Realworks</h3><p>Het portaal toont kopieerblokken per Realworks-tabblad. De makelaar zet het object in Realworks en slaat daar zelf op.</p></div></li>
+    </ol>
+    <div class="card later"><span class="tag">Later</span><p>Alleen met akkoord van Realworks: een browserextensie die het geopende Realworks-formulier in één keer invult, of een importbestand als Realworks dat aanbiedt. De makelaar blijft zelf op opslaan klikken.</p></div>
+  </section>
+
+  <section id="planning">
+    <h2>Planning</h2>
+    <p class="intro">Week 1 levert de AI-objectinvoer met kopieerblokken, met een interne demo op vrijdag 20 november. In week 2 stemmen we de koppeling af op de echte Realworks-documentatie en maken we de onboarding per kantoor klaar. In week 3 draait de pilot bij één kantoor en verwerken we de feedback.</p>
+    <div class="card timeline">
+      <div class="tl-head"><h3>Op 4 december besluiten we hoe objecten naar Realworks gaan</h3><p>Per dag, 16 november t/m 4 december 2026</p></div>
+      <div class="tl" role="img" aria-label="Tijdlijn van 16 november tot en met 4 december 2026">
+        <div class="bg" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span class="we"></span><span class="we"></span><span></span><span></span><span></span><span></span><span></span><span class="we"></span><span class="we"></span><span></span><span></span><span></span><span></span><span class="go"></span></div>
+        <div class="day"></div>
+        <div class="day"><small>ma</small>16</div><div class="day"><small>di</small>17</div><div class="day"><small>wo</small>18</div><div class="day"><small>do</small>19</div><div class="day"><small>vr</small>20</div><div class="day we"><small>za</small>21</div><div class="day we"><small>zo</small>22</div><div class="day"><small>ma</small>23</div><div class="day"><small>di</small>24</div><div class="day"><small>wo</small>25</div><div class="day"><small>do</small>26</div><div class="day"><small>vr</small>27</div><div class="day we"><small>za</small>28</div><div class="day we"><small>zo</small>29</div><div class="day"><small>ma</small>30</div><div class="day"><small>di</small>1</div><div class="day"><small>wo</small>2</div><div class="day"><small>do</small>3</div><div class="day"><small>vr</small>4</div>
+
+        <div class="lane">Week 1 · AI-objectinvoer</div>
+        <div class="name">BAG en energielabel ophalen</div><div class="track"><div class="bar us" style="grid-column:1/3"></div></div>
+        <div class="name">AI-teksten met goedkeuring</div><div class="track"><div class="bar us" style="grid-column:3/5"></div></div>
+        <div class="name">Kopieerblokken per tabblad</div><div class="track"><div class="bar us" style="grid-column:4/6"></div></div>
+        <div class="name">Interne demo</div><div class="track"><div class="ms-label" style="grid-column:1/5">vr 20 nov</div><div class="ms" style="grid-column:5"></div></div>
+        <div class="lane">Week 2 · Koppeling</div>
+        <div class="name">Paden en velden afstemmen</div><div class="track"><div class="bar us" style="grid-column:8/11"></div></div>
+        <div class="name">Onboarding per kantoor</div><div class="track"><div class="bar us" style="grid-column:11/13"></div></div>
+        <div class="lane">Week 3 · Pilot</div>
+        <div class="name">Pilot met één kantoor</div><div class="track"><div class="bar us" style="grid-column:15/18"></div></div>
+        <div class="name">Verbeteren na feedback</div><div class="track"><div class="bar us" style="grid-column:17/19"></div></div>
+        <div class="name key">Besluit: extensie of import</div><div class="track"><div class="ms-label key" style="grid-column:13/19">vr 4 dec</div><div class="ms key" style="grid-column:19"></div></div>
+        <div class="lane">Afspraken (jullie)</div>
+        <div class="name">Realworks: gesprek, voorwaarden</div><div class="track"><div class="bar" style="grid-column:1/4"></div></div>
+        <div class="name">Jurist: verwerkersovereenkomst</div><div class="track"><div class="bar" style="grid-column:3/13"></div></div>
+        <div class="name">HousApp benaderen</div><div class="track"><div class="bar" style="grid-column:4/5"></div></div>
+        <div class="name">Pilotkantoor vinden</div><div class="track"><div class="bar" style="grid-column:8/13"></div></div>
+      </div>
+      <div class="tl-foot"><span><i style="background:color-mix(in srgb, var(--accent) 40%, var(--surface))"></i>Bouw</span><span><i style="background:var(--bar)"></i>Afspraken</span><span><i style="background:var(--weekend);border:1px solid var(--border)"></i>Weekend</span></div>
+    </div>
+    <div class="weeks">
+      <div class="card week"><h3>Week 1: AI-objectinvoer</h3><div class="when">16 t/m 20 november</div><ul><li>BAG- en energielabelgegevens ophalen op adres</li><li>AI-teksten met voorstel en goedkeuring</li><li>Kopieerblokken per Realworks-tabblad</li><li>Interne demo op vrijdag</li></ul></div>
+      <div class="card week"><h3>Week 2: koppeling</h3><div class="when">23 t/m 27 november</div><ul><li>Paden en veldnamen afstemmen op de Realworks-documentatie</li><li>Onboarding per kantoor: checklist, activatie en tokens</li><li>Pilotkantoor vastleggen</li></ul></div>
+      <div class="card week"><h3>Week 3: pilot</h3><div class="when">30 november t/m 4 december</div><ul><li>Pilot bij één kantoor met eigen tokens</li><li>Verbeteren op basis van de feedback</li><li>Besluit over extensie of import op vrijdag</li></ul></div>
+    </div>
+    <p class="intro" style="margin-top:20px">De bouw doen wij. De gesprekken met Realworks, de jurist, HousApp en het pilotkantoor liggen bij jullie. De verwerkersovereenkomst moet rond zijn voordat de pilot met echte klantdata start. Het besluit op 4 december hangt af van wat Realworks antwoordt over de extensie en een objectimport.</p>
+  </section>
+
+  <section id="open">
+    <h2>Risico's en open vragen</h2>
+    <p class="intro">Vink af wat geregeld is. Je vinkjes worden alleen in deze browser onthouden.</p>
+    <div class="checks">
+      <div class="card check-card" data-group="realworks"><h3>Realworks <small></small></h3>
+        <label><input type="checkbox"><span>Ontwikkelaarsvoorwaarden lezen in het Developers Portal (doorverkopen, opslaan van data, concurrerend gebruik)</span></label>
+        <label><input type="checkbox"><span>Exacte paden en veldnamen van de Relatie-, Agenda- en Wonen-API overnemen</span></label>
+        <label><input type="checkbox"><span>Vragen: kunnen we officieel Marketplace-partner worden?</span></label>
+        <label><input type="checkbox"><span>Vragen: mag een browserextensie het objectformulier invullen?</span></label>
+        <label><input type="checkbox"><span>Vragen: bestaat er een import voor objecten?</span></label>
+        <label><input type="checkbox"><span>Vragen: welke limieten gelden, en zijn er webhooks?</span></label>
+        <label><input type="checkbox"><span>Vragen: komt er een manier om afspraken terug te schrijven?</span></label>
+      </div>
+      <div class="card check-card" data-group="jurist"><h3>Juridisch <small></small></h3>
+        <label><input type="checkbox"><span>Verwerkersovereenkomst voor kantoren opstellen</span></label>
+        <label><input type="checkbox"><span>Lijst van subverwerkers (hosting, e-mail, Anthropic voor AI)</span></label>
+        <label><input type="checkbox"><span>Algemene voorwaarden en privacyverklaring</span></label>
+        <label><input type="checkbox"><span>Afspraken over bewaartermijnen; alleen importeren wat nodig is</span></label>
+      </div>
+      <div class="card check-card" data-group="housapp"><h3>HousApp <small></small></h3>
+        <label><input type="checkbox"><span>Contact opnemen: API-documentatie of afspraak over ons webhookformaat</span></label>
+      </div>
+      <div class="card check-card" data-group="product"><h3>Product <small></small></h3>
+        <label><input type="checkbox"><span>Demo alleen met nepdata, nooit met echte klantdata</span></label>
+        <label><input type="checkbox"><span>Kantoor zoeken voor een pilot (met eigen Realworks-tokens)</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section id="bronnen">
+    <h2>Bronnen</h2>
+    <ul class="sources">
+      <li><a href="https://www.realworks.nl/api">Realworks: overzicht van de API's</a></li>
+      <li><a href="https://support.kolibri.software/portal/nl/kb/articles/realworks-api-koppeling-aanvragen-en-activeren">Kolibri Support: Realworks API activeren</a></li>
+      <li><a href="https://brixxs.com/faq/hoe-kan-ik-een-api-koppeling-maken-met-realworks/">Brixxs: API-koppeling met Realworks</a></li>
+      <li><a href="https://brainbay.nl/en/products/brainbay-api/">Brainbay API</a></li>
+      <li><a href="https://www.acm.nl/nl/digitale-economie/data/clouddiensten">ACM: clouddiensten en de Data Act</a></li>
+      <li><a href="https://developers.omnicasa.com/en/apply">Omnicasa: API-toegang aanvragen</a></li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><span>Makelaarsportaal · plan, stand van 12 november 2026</span><button class="theme-btn" type="button" id="theme">Thema wisselen</button></div>
+</footer>
+
+<script>
+  // Vinkjes per browser onthouden (werkt ook zonder opslag).
+  const KEY = 'plan-checks-v1';
+  let saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { saved = {}; }
+  document.querySelectorAll('.check-card').forEach((card) => {
+    const boxes = [...card.querySelectorAll('input')];
+    const count = card.querySelector('small');
+    const update = () => { count.textContent = `${boxes.filter((b) => b.checked).length}/${boxes.length}`; };
+    boxes.forEach((b, i) => {
+      const id = `${card.dataset.group}-${i}`;
+      b.checked = !!saved[id];
+      b.addEventListener('change', () => {
+        saved[id] = b.checked; update();
+        try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+      });
+    });
+    update();
+  });
+
+  // Thema wisselen (licht/donker), onthouden waar mogelijk.
+  const root = document.documentElement;
+  try { const t = localStorage.getItem('plan-theme'); if (t) root.dataset.theme = t; } catch (e) {}
+  document.getElementById('theme').addEventListener('click', () => {
+    const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme = dark ? 'light' : 'dark';
+    try { localStorage.setItem('plan-theme', root.dataset.theme); } catch (e) {}
+  });
+
+  // Actieve sectie in de navigatie markeren.
+  const links = [...document.querySelectorAll('nav.toc a')];
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (en.isIntersecting) links.forEach((a) => a.classList.toggle('active', a.getAttribute('href') === `#${en.target.id}`));
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  document.querySelectorAll('main section').forEach((s) => obs.observe(s));
+</script>
+</body>
+</html>
